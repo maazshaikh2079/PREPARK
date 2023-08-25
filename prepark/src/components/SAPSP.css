@@ -1,0 +1,171 @@
+/* Reset default margin and padding */
+body,
+div {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Center the container div */
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #f5f5f5;
+  border: 1px solid #ccc;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  padding: 20px; /* Add padding on all sides */
+}
+
+/* Divide container into two parts */
+.image,
+.form {
+  flex: 1;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  transition: filter 0.3s; /* Add transition for the dim effect */
+}
+
+/* Styling for the image part */
+.image {
+  background-image: url("./assets/images/PublicParking.jpeg");
+  /* Replace with actual image path */
+  background-size: cover;
+  background-position: center;
+  min-width: 50%;
+  /* Ensure a minimum width for the image part */
+}
+
+/* Dim effect when hovering over form */
+.container:hover .image {
+  filter: brightness(0.6); /* Apply dim effect */
+}
+
+/* Styling for the form part */
+.form {
+  background-color: #ffffff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  /* Stack form components vertically */
+  align-items: center;
+  width: 100%;
+  max-width: 400px;
+  /* Limit form width for readability */
+  min-width: 50%;
+  /* Ensure a minimum width for the form part */
+}
+
+/* Add padding and style to the form */
+.form h1 {
+  text-align: center;
+  margin-bottom: 20px;
+  /* Add margin between heading and form */
+  color: #333333;
+  font-size: 24px;
+}
+
+.form form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.form label,
+.form input,
+.form button {
+  margin: 5px 0; /* Decrease space between label/input/button */
+  padding: 10px;
+  width: 100%;
+  border: none;
+  /* Remove borders from labels, inputs, and buttons */
+  font-size: 14px;
+}
+
+.form input {
+  border: none; /* Remove border */
+  border-bottom: 1px solid #ccc; /* Add bottom border */
+  padding: 2px 0; /* Adjust padding for bottom border */
+  font-size: 14px; /* Adjust font size */
+}
+
+.form button {
+  cursor: pointer;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  transition: background-color 0.3s; /* Add transition for background color change */
+  font-size: 16px;
+}
+
+.form button:hover {
+  background-color: #0056b3;
+}
+
+/* Style for the button div */
+.form button-div {
+  display: flex;
+  flex-direction: column; /* Change flex-direction to stack buttons vertically */
+  align-items: center;
+  width: 100%;
+  margin-top: 10px; /* Add margin between buttons */
+}
+
+/* Style for the Google buttons */
+.form .google-buttons {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  margin-top: 10px; /* Add margin between buttons */
+}
+
+.form .google-buttons button {
+  flex: 1;
+  margin: 5px;
+  width: 100%; /* Set width to 100% for full width */
+}
+
+/* Media queries for responsiveness */
+/* Media queries for responsiveness */
+@media (max-width: 600px) {
+  .container {
+    flex-direction: column;
+    height: auto;
+  }
+
+  .image,
+  .form {
+    min-width: 100%;
+  }
+}
+
+@media (min-width: 700px) {
+  .container {
+    flex-direction: row; /* Set flex direction back to row */
+    height: 100vh;
+  }
+
+  .image,
+  .form {
+    min-width: 50%; /* Ensure a minimum width for both image and form */
+  }
+
+  .form {
+    display: flex; /* Show the form div */
+  }
+}
+.form input {
+  transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1); /* Add transition for the animation with a smooth cubic-bezier timing function */
+}
+
+.form input:hover {
+  transform: scale(1.05); /* Enlarge the input field on hover */
+}
