@@ -1,6 +1,16 @@
 import "./PPSP.css";
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+// import { useState, useEffect } from 'react';
+import { db } from "../firebase-config.js";
+import { 
+  collection, 
+  getDocs,   // R
+  addDoc,    // C
+  updateDoc, // U
+  doc,       // U
+  deleteDoc  // D
+} from "firebase/firestore";
 import { Form, Alert } from "react-bootstrap";
 import { Button } from "react-bootstrap";
 
@@ -12,10 +22,31 @@ function PPASP() {
     vehicleNo: "",
   });
 
-  const handleChange = (event) => {
-    const { name, value } = event.target;
-    setFormData((prevData) => ({ ...prevData, [name]: value }));
-  };
+  const [Name, setName] = useState("");
+  const [Phone, setPhone] = useState(0);
+  const [Email, setEmail] = useState("");
+  const [Password, setPassword] = useState("");
+  const [Vehicle, setVehicle] = useState("");
+  const [Slot, setSlot] = useState("");
+
+  // const [users, setUsers] = useState([]);
+  const usersCollectionRef = collection(db, "Parking_Users");
+
+  const registerUser = async () => {
+    if (Name!="" && Phone!=0 && Email!="" && Password!="" && Vehicle!="") {
+      await addDoc(usersCollectionRef, { 
+        
+          Name: Name, 
+          Phone: Number(Phone), 
+          Email: Email, 
+          Vehicle: Vehicle
+        
+      });
+    }
+    else {
+      alert("Enter complete details!");
+    }
+}
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -35,8 +66,21 @@ function PPASP() {
             type="text"
             id="fullName"
             name="fullName"
-            value={formData.fullName}
-            onChange={handleChange}
+            //value={formData.fullName}
+            onChange={(event) => {
+              setName(event.target.value);
+            }}
+            required
+          />
+          <label htmlFor="phoneNo">Phone no.:</label>
+          <input
+            type="text"
+            id="phoneNo"
+            name="phoneNo"
+            // value={formData.phoneNo}
+            onChange={(event) => {
+              setPhone(event.target.value);
+            }}
             required
           />
 
@@ -45,8 +89,10 @@ function PPASP() {
             type="email"
             id="email"
             name="email"
-            value={formData.email}
-            onChange={handleChange}
+            //value={formData.email}
+            onChange={(event) => {
+              setEmail(event.target.value);
+            }}
             required
           />
 
@@ -55,8 +101,10 @@ function PPASP() {
             type="password"
             id="password"
             name="password"
-            value={formData.password}
-            onChange={handleChange}
+            //value={formData.password}
+            onChange={(event) => {
+              setPassword(event.target.value);
+            }}
             required
           />
 
@@ -65,12 +113,14 @@ function PPASP() {
             type="text"
             id="vehicleNo"
             name="vehicleNo"
-            value={formData.vehicleNo}
-            onChange={handleChange}
+            //value={formData.vehicleNo}
+            onChange={(event) => {
+              setVehicle(event.target.value);
+            }}
             required
           />
 
-          <button type="submit">Sign Up</button>
+          <button type="submit" onClick={registerUser}>Sign Up</button>
         </form>
         <div className="google-buttons">
           <button className="google-button" onClick={handleSignInWithGoogle}>

@@ -42,6 +42,16 @@ function SocietyAutomationParkingAuthorization() {
             required
           />
 
+          <label htmlFor="phoneNo">Phone no.:</label>
+          <input
+            type="number"
+            id="phoneNo"
+            name="phoneNo"
+            value={formData.phoneNo}
+            onChange={handleChange}
+            required
+          />
+
           <label htmlFor="roomNo">Room No:</label>
           <input
             type="text"
