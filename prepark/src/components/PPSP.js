@@ -1,8 +1,10 @@
 import "./PPSP.css";
+import "../App.css";
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Form, Alert } from "react-bootstrap";
 import { Button } from "react-bootstrap";
+import GoogleButton from "react-google-button";
 import { useUserAuth } from "../context/UserAuthContext";
 import { db } from "../firebase-config.js";
 import { 
@@ -15,13 +17,6 @@ import {
 } from "firebase/firestore";
 
 function PPASP() {
-  const [formData, setFormData] = useState({
-    fullName: "",
-    email: "",
-    password: "",
-    vehicleNo: "",
-  });
-
   const [Name, setName] = useState("");
   const [Phone, setPhone] = useState(0);
   const [Email, setEmail] = useState("");
@@ -33,36 +28,32 @@ function PPASP() {
   const { signUp } = useUserAuth();
   const navigate = useNavigate();
 
-  // const [users, setUsers] = useState([]);
   const usersCollectionRef = collection(db, "Parking_Users");
 
-  const registerUser = async () => {
-    if (Name!=="" && Phone!==0 && Email!=="" && Password!=="" && Vehicle!=="") {
-      await addDoc(usersCollectionRef, { 
-        
-          Name: Name, 
-          Phone: Number(Phone), 
-          Email: Email, 
-          Vehicle: Vehicle
-        
-      });
-    }
-    else {
-      alert("Enter complete details!");
-    }
-}
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError("");
+    try {
+        if (Name!=="" && Phone!==0 && Email!=="" && Password!=="" && Vehicle!=="") {
+          await signUp(Email, Password);
+          navigate("/");
+          await addDoc(usersCollectionRef, { 
 
-const handleSubmit = async (e) => {
-  e.preventDefault();
-  setError("");
-  try {
-      await signUp(Email, Password);
-      navigate("/");
-  } catch(err) {
-      setError(err.message);
-  } 
-};
-
+              Name: Name, 
+              Phone: Number(Phone), 
+              Email: Email, 
+              Vehicle: Vehicle
+            
+          });
+        }
+        else {
+          alert("Enter complete details!");
+        }
+    } catch(err) {
+        setError(err.message);
+    } 
+  };
+  
   const handleSignInWithGoogle = () => {
     // Handle sign in with Google logic here
   };
@@ -70,6 +61,7 @@ const handleSubmit = async (e) => {
   return (
     <div className="container">
       <div className="form">
+      {error && <Alert variant="danger">{error}</Alert>}
         <form onSubmit={handleSubmit}>
           <label htmlFor="fullName">Full Name:</label>
           <input
@@ -129,17 +121,21 @@ const handleSubmit = async (e) => {
             }}
             required
           />
-
-          <button type="submit" onClick={registerUser}>Sign Up</button>
+          
+          <button type="submit">Sign Up</button>
         </form>
-        <div className="google-buttons">
-          <button className="google-button" onClick={handleSignInWithGoogle}>
-            Sign In with Google
-          </button>
-          <p className="sign-in-link">Already have an account? 
-          <Link to="/ppsi">Sign in</Link>
-          </p>
+
+        <div>
+          <GoogleButton
+            type="dark"
+            onClick={handleSignInWithGoogle}
+          />
         </div>
+        
+        <br/>
+        <p className="sign-in-link">Already have an account? 
+         <Link to="/ppsi">Sign in</Link>
+        </p>
       </div>
       <div className="imageppa-container"></div>
     </div>
