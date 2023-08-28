@@ -1,7 +1,9 @@
 import "./PPSP.css";
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-// import { useState, useEffect } from 'react';
+import { Form, Alert } from "react-bootstrap";
+import { Button } from "react-bootstrap";
+import { useUserAuth } from "../context/UserAuthContext";
 import { db } from "../firebase-config.js";
 import { 
   collection, 
@@ -11,8 +13,6 @@ import {
   doc,       // U
   deleteDoc  // D
 } from "firebase/firestore";
-import { Form, Alert } from "react-bootstrap";
-import { Button } from "react-bootstrap";
 
 function PPASP() {
   const [formData, setFormData] = useState({
@@ -29,11 +29,15 @@ function PPASP() {
   const [Vehicle, setVehicle] = useState("");
   const [Slot, setSlot] = useState("");
 
+  const [error, setError] = useState("");
+  const { signUp } = useUserAuth();
+  const navigate = useNavigate();
+
   // const [users, setUsers] = useState([]);
   const usersCollectionRef = collection(db, "Parking_Users");
 
   const registerUser = async () => {
-    if (Name!="" && Phone!=0 && Email!="" && Password!="" && Vehicle!="") {
+    if (Name!=="" && Phone!==0 && Email!=="" && Password!=="" && Vehicle!=="") {
       await addDoc(usersCollectionRef, { 
         
           Name: Name, 
@@ -48,10 +52,16 @@ function PPASP() {
     }
 }
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    // Perform form submission logic here
-  };
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  setError("");
+  try {
+      await signUp(Email, Password);
+      navigate("/");
+  } catch(err) {
+      setError(err.message);
+  } 
+};
 
   const handleSignInWithGoogle = () => {
     // Handle sign in with Google logic here
