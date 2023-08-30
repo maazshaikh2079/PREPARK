@@ -1,7 +1,11 @@
 import "./SAPSP.css";
+import "../App.css";
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-// import { useState, useEffect } from 'react';
+import { Form, Alert } from "react-bootstrap";
+import { Button } from "react-bootstrap";
+import GoogleButton from "react-google-button";
+import { useUserAuth } from "../context/UserAuthContext";
 import { db } from "../firebase-config.js";
 import { 
   collection, 
@@ -11,18 +15,8 @@ import {
   doc,       // U
   deleteDoc  // D
 } from "firebase/firestore";
-import { Form, Alert } from "react-bootstrap";
-import { Button } from "react-bootstrap";
 
 function SAPSP() {
-  const [formData, setFormData] = useState({
-    fullName: "",
-    roomNo: "",
-    email: "",
-    vehicleNo: "",
-    password: "",
-  });
-
   const [Name, setName] = useState("");
   const [Phone, setPhone] = useState(0);
   const [Room, setRoom] = useState(0);
@@ -31,44 +25,54 @@ function SAPSP() {
   const [Vehicle, setVehicle] = useState("");
   const [Slot, setSlot] = useState("");
 
-  // const [users, setUsers] = useState([]);
+  const [error, setError] = useState("");
+  const { signUp } = useUserAuth();
+  const { logIn, googleSignIn } = useUserAuth();
+  const navigate = useNavigate();
+
+
   const usersCollectionRef = collection(db, "Residents");
 
-  const registerResident = async () => {
-    if (Name!=="" && Phone!==0 && Room!==0 && Email!=="" && Password!=="" && Vehicle!=="") {
-      await addDoc(usersCollectionRef, { 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError("");
+    try {
+        if (Name!=="" && Phone!==0 && Room!==0 && Email!=="" && Password!=="" && Vehicle!=="") {
+          await signUp(Email, Password);
+          navigate("/");
+          await addDoc(usersCollectionRef, { 
 
-          Name: Name, 
-          Phone: Number(Phone),
-          Room: Room, 
-          Email: Email, 
-          Vehicle: Vehicle
-        
-      });
-    }
-    else {
-      alert("Enter complete details!");
-    }
-  }
-
-  const handleChange = (event) => {
-    const { name, value } = event.target;
-    setFormData((prevData) => ({ ...prevData, [name]: value }));
+              Name: Name, 
+              Room: Room,
+              Phone: Number(Phone), 
+              Email: Email, 
+              Vehicle: Vehicle
+            
+          });
+        }
+        else {
+          alert("Enter complete details!");
+        }
+    } catch(err) {
+        setError(err.message);
+    } 
   };
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    // Perform form submission logic here
-  };
-
-  const handleSignInWithGoogle = () => {
-    // Handle sign in with Google logic here
+  const handleGoogleSignIn = async(e) => {
+    e.preventDefault();
+    try {
+        await googleSignIn();
+        navigate("/");
+    } catch(err) {
+        setError(err.message);
+    }
   };
 
   return (
     <div className="container">
       <div className="image"></div>
       <div className="form">
+       {error && <Alert variant="danger">{error}</Alert>}
         <form onSubmit={handleSubmit}>
           <label htmlFor="fullName">Full Name:</label>
           <input
@@ -139,16 +143,22 @@ function SAPSP() {
             }}
             required
           />
-        <button type="submit" onClick={registerResident}>Sign Up</button>
+
+         {/* <br/> */}
+          <button type="submit">Sign Up</button>
         </form>
-        <div className="google-buttons">
-          <button className="google-button" onClick={handleSignInWithGoogle}>
-            Sign In with Google
-          </button>
-          <p className="sign-in-link">Already have an account? 
-          <Link to="/sapsi">Sign In</Link>
-          </p>
+
+        <div>
+          <GoogleButton
+            type="dark"
+            onClick={ handleGoogleSignIn }
+          />
         </div>
+
+        {/* <br/> */}
+        <p className="sign-in-link">Already have an account? 
+        <Link to="/sapsi">Sign In</Link>
+        </p>
       </div>
     </div>
   );

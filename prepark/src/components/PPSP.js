@@ -26,6 +26,7 @@ function PPASP() {
 
   const [error, setError] = useState("");
   const { signUp } = useUserAuth();
+  const { logIn, googleSignIn } = useUserAuth();
   const navigate = useNavigate();
 
   const usersCollectionRef = collection(db, "Parking_Users");
@@ -54,9 +55,16 @@ function PPASP() {
     } 
   };
   
-  const handleSignInWithGoogle = () => {
-    // Handle sign in with Google logic here
+  const handleGoogleSignIn = async(e) => {
+    e.preventDefault();
+    try {
+        await googleSignIn();
+        navigate("/");
+    } catch(err) {
+        setError(err.message);
+    }
   };
+
 
   return (
     <div className="container">
@@ -122,19 +130,18 @@ function PPASP() {
             required
           />
           
+          <br/>
           <button type="submit">Sign Up</button>
         </form>
 
-        <div>
-          <GoogleButton
-            type="dark"
-            onClick={handleSignInWithGoogle}
-          />
-        </div>
+        <br/>
+        <p className="sign-in-link">Sing Up with `
+         <Link to="/ppgs">Google account</Link>`
+        </p>
         
         <br/>
-        <p className="sign-in-link">Already have an account? 
-         <Link to="/ppsi">Sign in</Link>
+        <p className="sign-in-link">Already have an account? `
+         <Link to="/ppsi">Sign in</Link>`
         </p>
       </div>
       <div className="imageppa-container"></div>

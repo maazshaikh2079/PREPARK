@@ -6,6 +6,8 @@ import SAPSI from "./components/SAPSI.js";
 import SAPSP from "./components/SAPSP.js";
 import PPSP from "./components/PPSP.js";
 import PPSI from "./components/PPSI.js";
+import PPGS from "./components/PPGS.js";
+
 function App() {
   return (
     <Container>
@@ -19,6 +21,7 @@ function App() {
           <Route path='/sapsp' element={<SAPSP/>}/>
           <Route path='/ppsp' element={<PPSP/>}/>
           <Route path='/ppsi' element={<PPSI/>}/>
+          <Route path='/ppgs' element={<PPGS/>}/>
          </Routes>
          </UserAuthContextProvider>
         </Col>
