@@ -6,10 +6,10 @@ import {
     onAuthStateChanged,
     GoogleAuthProvider,
     signInWithPopup,
-    sendPasswordResetEmail
+    sendPasswordResetEmail,
+    sendEmailVerification // Add this import
 } from "firebase/auth";
 import { auth } from "../firebase-config.js";
-
 
 const userAuthContext = createContext();
 
@@ -21,7 +21,6 @@ export function UserAuthContextProvider({ children }) {
     }
     
     function logIn(email, password) {
-        console.log("Email :",email);
         return signInWithEmailAndPassword(auth, email, password);
     }
     
@@ -34,16 +33,23 @@ export function UserAuthContextProvider({ children }) {
         return signInWithPopup(auth, googleAuthProvider);
     }
 
+
+    // function verifyEmail(email) {
+    //     return sendEmailVerification(auth,email); // Send email verification
+    // }
+
+
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
             setUser(currentUser);
         });
-        return(() => {
+        return () => {
             unsubscribe();
-        });
+        };
     }, []);
 
     return <userAuthContext.Provider value={{user, signUp, logIn, logOut, googleSignIn}}>{children}</userAuthContext.Provider>;
+   // return <userAuthContext.Provider value={{user, signUp, logIn, logOut, googleSignIn, verifyEmail}}>{children}</userAuthContext.Provider>;
 }
 
 export function useUserAuth() {

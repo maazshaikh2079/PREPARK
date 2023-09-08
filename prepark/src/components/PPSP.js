@@ -5,7 +5,11 @@ import { Link, useNavigate } from "react-router-dom";
 import { Form, Alert } from "react-bootstrap";
 import { Button } from "react-bootstrap";
 import GoogleButton from "react-google-button";
+import { sendEmailVerification, deleteUser } from "firebase/auth";
+import { auth } from "../firebase-config.js";
 import { useUserAuth } from "../context/UserAuthContext";
+
+
 import { db } from "../firebase-config.js";
 import { 
   collection, 
@@ -26,45 +30,39 @@ function PPASP() {
 
   const [error, setError] = useState("");
   const { signUp } = useUserAuth();
+  // const { verifyEmail } = useUserAuth();
   const { logIn, googleSignIn } = useUserAuth();
+  // const { user, logOut } = useUserAuth();
+  const { logOut } = useUserAuth();
   const navigate = useNavigate();
 
   const usersCollectionRef = collection(db, "Parking_Users");
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setError("");
-    try {
-        if (Name!=="" && Phone!==0 && Email!=="" && Password!=="" && Vehicle!=="") {
-          await signUp(Email, Password);
-          navigate("/");
-          await addDoc(usersCollectionRef, { 
-
-              Name: Name, 
-              Phone: Number(Phone), 
-              Email: Email, 
-              Vehicle: Vehicle
-            
-          });
-        }
-        else {
-          alert("Enter complete details!");
-        }
-    } catch(err) {
-        setError(err.message);
-    } 
-  };
-  
-  const handleGoogleSignIn = async(e) => {
-    e.preventDefault();
-    try {
-        await googleSignIn();
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  setError("");
+  try {
+      if (Name!=="" && Phone!==0 && Email!=="" && Password!=="" && Vehicle!=="") {
+        const user = auth.currentUser;
+        await signUp(Email, Password);
+        await sendEmailVerification(auth.currentUser);
+        // console.log(auth.currentUser);
+        await addDoc(usersCollectionRef, { 
+          Name: Name, 
+          Phone: Number(Phone), 
+          Email: Email, 
+          Vehicle: Vehicle
+        });
+        await deleteUser(auth.currentUser);
         navigate("/");
-    } catch(err) {
-        setError(err.message);
-    }
-  };
-
+      }
+      else {
+          alert("Enter complete details!");
+      }
+  } catch(err) {
+      setError(err.message);
+  } 
+};
 
   return (
     <div className="container">
@@ -134,7 +132,7 @@ function PPASP() {
           <button type="submit">Sign Up</button>
         </form>
 
-        <br/>
+        {/* <br/>
         <p className="sign-in-link">Sing Up with `
          <Link to="/ppgs">Google account</Link>`
         </p>
@@ -142,10 +140,10 @@ function PPASP() {
         <br/>
         <p className="sign-in-link">Already have an account? `
          <Link to="/ppsi">Sign in</Link>`
-        </p>
+        </p> */}
       </div>
       <div className="imageppa-container"></div>
-    </div>
+    </div>  
   );
 }
 
