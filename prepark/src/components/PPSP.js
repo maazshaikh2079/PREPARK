@@ -42,26 +42,56 @@ const handleSubmit = async (e) => {
   e.preventDefault();
   setError("");
   try {
-      if (Name!=="" && Phone!==0 && Email!=="" && Password!=="" && Vehicle!=="") {
-        const user = auth.currentUser;
-        await signUp(Email, Password);
-        await sendEmailVerification(auth.currentUser);
-        // console.log(auth.currentUser);
-        await addDoc(usersCollectionRef, { 
-          Name: Name, 
-          Phone: Number(Phone), 
-          Email: Email, 
+    if (Name !== "" && Phone !== 0 && Email !== "" && Password !== "" && Vehicle !== "") {
+      // Step 1: Sign up the user
+      await signUp(Email, Password);
+
+      // Step 2: Send email verification
+      await sendEmailVerification(auth.currentUser);
+
+      // Step 3: Wait for email verification
+      const isEmailVerified = await waitForEmailVerification();
+
+      if (isEmailVerified) {
+        // Step 4: Email is verified, store data in the database
+        await addDoc(usersCollectionRef, {
+          Name: Name,
+          Phone: Number(Phone),
+          Email: Email,
           Vehicle: Vehicle
         });
-        await deleteUser(auth.currentUser);
+
         navigate("/");
+      } else {
+        // Step 5: Email not verified, delete the signed-up user
+        await deleteUser(auth.currentUser);
+
+        alert("Email verification link expired. Please sign up again.");
       }
-      else {
-          alert("Enter complete details!");
-      }
-  } catch(err) {
-      setError(err.message);
-  } 
+    } else {
+      alert("Enter complete details!");
+    }
+  } catch (err) {
+    setError(err.message);
+  }
+};
+
+// Function to wait for email verification within a timeout period
+const waitForEmailVerification = async () => {
+  let timeout = 60 * 1000; // 60 seconds, adjust as needed
+  const user = auth.currentUser;
+
+  while (timeout > 0) {
+    await user.reload(); // Refresh user data
+    if (user.emailVerified) {
+      return true; // Email is verified
+    }
+
+    await new Promise((resolve) => setTimeout(resolve, 1000)); // Wait for 1 second
+    timeout -= 1000;
+  }
+
+  return false; // Email verification link expired
 };
 
   return (
@@ -131,16 +161,11 @@ const handleSubmit = async (e) => {
           <br/>
           <button type="submit">Sign Up</button>
         </form>
-
-        {/* <br/>
-        <p className="sign-in-link">Sing Up with `
-         <Link to="/ppgs">Google account</Link>`
-        </p>
         
         <br/>
         <p className="sign-in-link">Already have an account? `
          <Link to="/ppsi">Sign in</Link>`
-        </p> */}
+        </p> 
       </div>
       <div className="imageppa-container"></div>
     </div>  
