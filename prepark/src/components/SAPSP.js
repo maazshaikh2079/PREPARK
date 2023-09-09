@@ -5,7 +5,9 @@ import { Link, useNavigate } from "react-router-dom";
 import { Form, Alert } from "react-bootstrap";
 import { Button } from "react-bootstrap";
 import GoogleButton from "react-google-button";
+import { sendEmailVerification, deleteUser } from "firebase/auth";
 import { useUserAuth } from "../context/UserAuthContext";
+import { auth } from "../firebase-config.js";
 import { db } from "../firebase-config.js";
 import { 
   collection, 
@@ -27,7 +29,6 @@ function SAPSP() {
 
   const [error, setError] = useState("");
   const { signUp } = useUserAuth();
-  const { logIn, googleSignIn } = useUserAuth();
   const navigate = useNavigate();
 
 
@@ -38,34 +39,56 @@ function SAPSP() {
     setError("");
     try {
         if (Name!=="" && Phone!==0 && Room!==0 && Email!=="" && Password!=="" && Vehicle!=="") {
+          // Step 1: Sign up the user
           await signUp(Email, Password);
-          navigate("/");
-          await addDoc(usersCollectionRef, { 
 
-              Name: Name, 
+          // Step 2: Send email verification
+          await sendEmailVerification(auth.currentUser);
+
+          // Step 3: Wait for email verification
+          const isEmailVerified = await waitForEmailVerification();
+
+          if (isEmailVerified) {
+            // Step 4: Email is verified, store data in the database
+            await addDoc(usersCollectionRef, {
+              Name: Name,
               Room: Room,
-              Phone: Number(Phone), 
-              Email: Email, 
+              Phone: Number(Phone),
+              Email: Email,
               Vehicle: Vehicle
-            
-          });
-        }
-        else {
+            });
+    
+            navigate("/");
+          } else {
+            // Step 5: Email not verified, delete the signed-up user
+            await deleteUser(auth.currentUser);
+    
+            alert("Email verification link expired. Please sign up again.");
+          }
+        } else {
           alert("Enter complete details!");
         }
-    } catch(err) {
+      } catch (err) {
         setError(err.message);
-    } 
-  };
+      }
+    };
 
-  const handleGoogleSignIn = async(e) => {
-    e.preventDefault();
-    try {
-        await googleSignIn();
-        navigate("/");
-    } catch(err) {
-        setError(err.message);
+  // Function to wait for email verification within a timeout period
+  const waitForEmailVerification = async () => {
+    let timeout = 60 * 1000; // 60 seconds, adjust as needed
+    const user = auth.currentUser;
+
+    while (timeout > 0) {
+      await user.reload(); // Refresh user data
+      if (user.emailVerified) {
+        return true; // Email is verified
+      }
+
+      await new Promise((resolve) => setTimeout(resolve, 1000)); // Wait for 1 second
+      timeout -= 1000;
     }
+
+    return false; // Email verification link expired
   };
 
   return (
@@ -79,7 +102,6 @@ function SAPSP() {
             type="text"
             id="fullName"
             name="fullName"
-           //value={formData.fullName}
            onChange={(event) => {
             setName(event.target.value);
           }}
@@ -91,7 +113,6 @@ function SAPSP() {
             type="number"
             id="phoneNo"
             name="phoneNo"
-            // value={formData.phoneNo}
             onChange={(event) => {
               setPhone(event.target.value);
             }}
@@ -102,7 +123,6 @@ function SAPSP() {
             type="text"
             id="roomNo"
             name="roomNo"
-           // value={formData.phoneNo}
            onChange={(event) => {
             setRoom(event.target.value);
           }}
@@ -113,7 +133,6 @@ function SAPSP() {
             type="email"
             id="email"
             name="email"
-            //value={formData.email}
             onChange={(event) => {
               setEmail(event.target.value);
             }}
@@ -148,16 +167,8 @@ function SAPSP() {
           <button type="submit">Sign Up</button>
         </form>
 
-        <div>
-          <GoogleButton
-            type="dark"
-            onClick={ handleGoogleSignIn }
-          />
-        </div>
-
         {/* <br/> */}
-        <p className="sign-in-link">Already have an account? 
-        <Link to="/sapsi">Sign In</Link>
+        <p className="sign-in-link">Already have an account? `<Link to="/sapsi">Sign In</Link>`
         </p>
       </div>
     </div>

@@ -31,9 +31,6 @@ function PPASP() {
   const [error, setError] = useState("");
   const { signUp } = useUserAuth();
   // const { verifyEmail } = useUserAuth();
-  const { logIn, googleSignIn } = useUserAuth();
-  // const { user, logOut } = useUserAuth();
-  const { logOut } = useUserAuth();
   const navigate = useNavigate();
 
   const usersCollectionRef = collection(db, "Parking_Users");
@@ -104,7 +101,6 @@ const waitForEmailVerification = async () => {
             type="text"
             id="fullName"
             name="fullName"
-            //value={formData.fullName}
             onChange={(event) => {
               setName(event.target.value);
             }}
@@ -115,7 +111,6 @@ const waitForEmailVerification = async () => {
             type="text"
             id="phoneNo"
             name="phoneNo"
-            // value={formData.phoneNo}
             onChange={(event) => {
               setPhone(event.target.value);
             }}
@@ -127,7 +122,6 @@ const waitForEmailVerification = async () => {
             type="email"
             id="email"
             name="email"
-            //value={formData.email}
             onChange={(event) => {
               setEmail(event.target.value);
             }}
@@ -139,7 +133,6 @@ const waitForEmailVerification = async () => {
             type="password"
             id="password"
             name="password"
-            //value={formData.password}
             onChange={(event) => {
               setPassword(event.target.value);
             }}
@@ -151,7 +144,6 @@ const waitForEmailVerification = async () => {
             type="text"
             id="vehicleNo"
             name="vehicleNo"
-            //value={formData.vehicleNo}
             onChange={(event) => {
               setVehicle(event.target.value);
             }}
@@ -164,7 +156,7 @@ const waitForEmailVerification = async () => {
         
         <br/>
         <p className="sign-in-link">Already have an account? `
-         <Link to="/ppsi">Sign in</Link>`
+         <Link to="/ppsi">Sign In</Link>`
         </p> 
       </div>
       <div className="imageppa-container"></div>

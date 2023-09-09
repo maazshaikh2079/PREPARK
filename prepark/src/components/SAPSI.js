@@ -11,7 +11,7 @@ function SAPSI() {
   const [Email, setEmail] = useState("");
   const [Password, setPassword] = useState("");
   const [error, setError] = useState("");
-  const { logIn, googleSignIn } = useUserAuth();
+  const { logIn } = useUserAuth();
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -25,15 +25,6 @@ function SAPSI() {
     } 
   };
 
-  const handleGoogleSignIn = async(e) => {
-    e.preventDefault();
-    try {
-        await googleSignIn();
-        navigate("/");
-    } catch(err) {
-        setError(err.message);
-    }
-  };
 
   return (
     <div className="container">
@@ -64,17 +55,12 @@ function SAPSI() {
           <button type="Submit">Sign In</button>
 
           </form>
-        <div>
-          <GoogleButton
-            type="dark"
-            onClick={ handleGoogleSignIn }
-          />
-        </div>
+        
 
         <br/>
         
           <p className="sign-in-link">Dont have an account? 
-          <Link to="/sapsp"> Sign Up </Link>
+          `<Link to="/sapsp">Sign Up</Link>`
           </p>
       
       </div>

@@ -12,7 +12,7 @@ function PPSI() {
   const [Email, setEmail] = useState("");
   const [Password, setPassword] = useState("");
   const [error, setError] = useState("");
-  const { logIn, googleSignIn } = useUserAuth();
+  const { logIn } = useUserAuth();
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -26,20 +26,8 @@ function PPSI() {
     } 
   };
 
-  const handleGoogleSignIn = async(e) => {
-    e.preventDefault();
-    try {
-        await googleSignIn();
-        navigate("/");
-    } catch(err) {
-        setError(err.message);
-    }
-  };
-
   return (
-    
     <div className="container">
-     
       <div className="form">
       {error && <Alert variant="danger">{error}</Alert>}
         <form onSubmit={handleSubmit}>
@@ -57,30 +45,19 @@ function PPSI() {
             type="password"
             id="password"
             name="password"
-            
             onChange={(e) => setPassword(e.target.value)}
             required
           />
           
           < br/>
           <button type="Submit">Sign In</button>
-
           </form>
-        <div>
-          <GoogleButton
-            type="dark"
-            onClick={ handleGoogleSignIn }
-          />
-        </div>
 
         <br/>
 
-        <p className="sign-in-link">Create an account  
-          <Link to="/ppsp"> Sign Up </Link>
+        <p className="sign-in-link">Create an account `  
+          <Link to="/ppsp">Sign Up</Link>`
         </p>
-
-
-
 
       </div>
       <div className="imageppa-container"></div>
