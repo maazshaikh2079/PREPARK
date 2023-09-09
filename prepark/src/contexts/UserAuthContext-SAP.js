@@ -9,28 +9,28 @@ import {
     sendPasswordResetEmail,
     sendEmailVerification // Add this import
 } from "firebase/auth";
-import { auth } from "../firebase-config.js";
+import {  authSAP } from "../configurations/firebase-config-SAP.js";
 
-const userAuthContext = createContext();
+const userAuthContextSAP = createContext();
 
-export function UserAuthContextProvider({ children }) {
+export function UserAuthContextProviderSAP({ children }) {
     const [user, setUser] = useState("");
     
     function signUp(email, password) {
-        return createUserWithEmailAndPassword(auth, email, password);
+        return createUserWithEmailAndPassword(authSAP, email, password);
     }
     
     function logIn(email, password) {
-        return signInWithEmailAndPassword(auth, email, password);
+        return signInWithEmailAndPassword(authSAP, email, password);
     }
     
     function logOut() {
-        return signOut(auth);
+        return signOut(authSAP);
     }
 
     function googleSignIn() {
         const googleAuthProvider = new GoogleAuthProvider();
-        return signInWithPopup(auth, googleAuthProvider);
+        return signInWithPopup(authSAP, googleAuthProvider);
     }
 
 
@@ -40,7 +40,7 @@ export function UserAuthContextProvider({ children }) {
 
 
     useEffect(() => {
-        const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+        const unsubscribe = onAuthStateChanged(authSAP, (currentUser) => {
             setUser(currentUser);
         });
         return () => {
@@ -48,10 +48,10 @@ export function UserAuthContextProvider({ children }) {
         };
     }, []);
 
-    return <userAuthContext.Provider value={{user, signUp, logIn, logOut, googleSignIn}}>{children}</userAuthContext.Provider>;
+    return <userAuthContextSAP.Provider value={{user, signUp, logIn, logOut, googleSignIn}}>{children}</userAuthContextSAP.Provider>;
    // return <userAuthContext.Provider value={{user, signUp, logIn, logOut, googleSignIn, verifyEmail}}>{children}</userAuthContext.Provider>;
 }
 
 export function useUserAuth() {
-    return useContext(userAuthContext);
+    return useContext(userAuthContextSAP);
 }

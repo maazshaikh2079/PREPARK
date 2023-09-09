@@ -6,9 +6,9 @@ import { Form, Alert } from "react-bootstrap";
 import { Button } from "react-bootstrap";
 import GoogleButton from "react-google-button";
 import { sendEmailVerification, deleteUser } from "firebase/auth";
-import { useUserAuth } from "../context/UserAuthContext";
-import { auth } from "../firebase-config.js";
-import { db } from "../firebase-config.js";
+import { useUserAuth } from "../contexts/UserAuthContext-SAP";
+import { authSAP } from "../configurations/firebase-config-SAP";
+import { dbSAP } from "../configurations/firebase-config-SAP";
 import { 
   collection, 
   getDocs,   // R
@@ -32,7 +32,7 @@ function SAPSP() {
   const navigate = useNavigate();
 
 
-  const usersCollectionRef = collection(db, "Residents");
+  const usersCollectionRef = collection(dbSAP, "Residents");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -43,7 +43,7 @@ function SAPSP() {
           await signUp(Email, Password);
 
           // Step 2: Send email verification
-          await sendEmailVerification(auth.currentUser);
+          await sendEmailVerification(authSAP.currentUser);
 
           // Step 3: Wait for email verification
           const isEmailVerified = await waitForEmailVerification();
@@ -61,7 +61,7 @@ function SAPSP() {
             navigate("/");
           } else {
             // Step 5: Email not verified, delete the signed-up user
-            await deleteUser(auth.currentUser);
+            await deleteUser(authSAP.currentUser);
     
             alert("Email verification link expired. Please sign up again.");
           }
@@ -76,7 +76,7 @@ function SAPSP() {
   // Function to wait for email verification within a timeout period
   const waitForEmailVerification = async () => {
     let timeout = 60 * 1000; // 60 seconds, adjust as needed
-    const user = auth.currentUser;
+    const user = authSAP.currentUser;
 
     while (timeout > 0) {
       await user.reload(); // Refresh user data
