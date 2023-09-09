@@ -1,6 +1,6 @@
-// import { initializeApp } from "firebase/app";
-// import { getFirestore } from "@firebase/firestore";
-// import {getAuth} from "firebase/auth";
+import { initializeApp } from "firebase/app";
+import { getFirestore } from "@firebase/firestore";
+import { getAuth } from "firebase/auth";
 
 const firebaseConfigPP = {
   apiKey: "AIzaSyCIheP9reHJ3SdDiyIrIhLpxvOKmHqfg74",
@@ -12,7 +12,7 @@ const firebaseConfigPP = {
   measurementId: "G-7VQ3L76TMG"
 }
 
-// const appPP = initializeApp(firebaseConfigPP);
-// export const db = getFirestore(appPP);
-// export const auth = getAuth(appPP);
-// export default appPP;
+const appPP = initializeApp(firebaseConfigPP, "ppApp");
+export const db = getFirestore(appPP);
+export const auth = getAuth(appPP);
+export default appPP;

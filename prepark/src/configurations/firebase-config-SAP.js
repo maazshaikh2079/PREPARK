@@ -12,7 +12,7 @@ const firebaseConfigSAP = {
     measurementId: "G-GKWZNPWKHG"
   };
 
-const appSAP = initializeApp(firebaseConfigSAP);
+const appSAP = initializeApp(firebaseConfigSAP, "sapApp");
 export const dbSAP = getFirestore(appSAP);
 export const authSAP = getAuth(appSAP);
 export default appSAP;
