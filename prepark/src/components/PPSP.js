@@ -6,11 +6,10 @@ import { Form, Alert } from "react-bootstrap";
 import { Button } from "react-bootstrap";
 import GoogleButton from "react-google-button";
 import { sendEmailVerification, deleteUser } from "firebase/auth";
-import { auth } from "../firebase-config.js";
-import { useUserAuth } from "../context/UserAuthContext";
+import { auth } from "../configurations/firebase-config-PP.js";
+import { useUserAuth } from "../contexts/UserAuthContext-PP.js";
+import { db } from "../configurations/firebase-config-PP.js";
 
-
-import { db } from "../firebase-config.js";
 import { 
   collection, 
   getDocs,   // R
@@ -20,7 +19,7 @@ import {
   deleteDoc  // D
 } from "firebase/firestore";
 
-function PPASP() {
+function PPSP() {
   const [Name, setName] = useState("");
   const [Phone, setPhone] = useState(0);
   const [Email, setEmail] = useState("");
@@ -164,4 +163,4 @@ const waitForEmailVerification = async () => {
   );
 }
 
-export default PPASP;
+export default PPSP;
