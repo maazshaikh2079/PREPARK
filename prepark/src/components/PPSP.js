@@ -6,9 +6,9 @@ import { Form, Alert } from "react-bootstrap";
 import { Button } from "react-bootstrap";
 import GoogleButton from "react-google-button";
 import { sendEmailVerification, deleteUser } from "firebase/auth";
-import { auth } from "../configurations/firebase-config-PP.js";
+import { authPP } from "../configurations/firebase-config-PP.js";
 import { useUserAuth } from "../contexts/UserAuthContext-PP.js";
-import { db } from "../configurations/firebase-config-PP.js";
+import { dbPP } from "../configurations/firebase-config-PP.js";
 
 import { 
   collection, 
@@ -32,7 +32,7 @@ function PPSP() {
   // const { verifyEmail } = useUserAuth();
   const navigate = useNavigate();
 
-  const usersCollectionRef = collection(db, "Parking_Users");
+  const usersCollectionRef = collection(dbPP, "Parking_Users");
 
 const handleSubmit = async (e) => {
   e.preventDefault();
@@ -43,7 +43,7 @@ const handleSubmit = async (e) => {
       await signUp(Email, Password);
 
       // Step 2: Send email verification
-      await sendEmailVerification(auth.currentUser);
+      await sendEmailVerification(authPP.currentUser);
 
       // Step 3: Wait for email verification
       const isEmailVerified = await waitForEmailVerification();
@@ -60,7 +60,7 @@ const handleSubmit = async (e) => {
         navigate("/");
       } else {
         // Step 5: Email not verified, delete the signed-up user
-        await deleteUser(auth.currentUser);
+        await deleteUser(authPP.currentUser);
 
         alert("Email verification link expired. Please sign up again.");
       }
@@ -75,7 +75,7 @@ const handleSubmit = async (e) => {
 // Function to wait for email verification within a timeout period
 const waitForEmailVerification = async () => {
   let timeout = 60 * 1000; // 60 seconds, adjust as needed
-  const user = auth.currentUser;
+  const user = authPP.currentUser;
 
   while (timeout > 0) {
     await user.reload(); // Refresh user data

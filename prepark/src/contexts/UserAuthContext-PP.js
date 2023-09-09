@@ -9,7 +9,7 @@ import {
     sendPasswordResetEmail,
     sendEmailVerification // Add this import
 } from "firebase/auth";
-import { auth } from "../configurations/firebase-config-PP.js";
+import { authPP } from "../configurations/firebase-config-PP.js";
 
 const userAuthContextPP = createContext();
 
@@ -17,20 +17,20 @@ export function UserAuthContextProviderPP({ children }) {
     const [user, setUser] = useState("");
     
     function signUp(email, password) {
-        return createUserWithEmailAndPassword(auth, email, password);
+        return createUserWithEmailAndPassword(authPP, email, password);
     }
     
     function logIn(email, password) {
-        return signInWithEmailAndPassword(auth, email, password);
+        return signInWithEmailAndPassword(authPP, email, password);
     }
     
     function logOut() {
-        return signOut(auth);
+        return signOut(authPP);
     }
 
     function googleSignIn() {
         const googleAuthProvider = new GoogleAuthProvider();
-        return signInWithPopup(auth, googleAuthProvider);
+        return signInWithPopup(authPP, googleAuthProvider);
     }
 
 
@@ -40,7 +40,7 @@ export function UserAuthContextProviderPP({ children }) {
 
 
     useEffect(() => {
-        const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+        const unsubscribe = onAuthStateChanged(authPP, (currentUser) => {
             setUser(currentUser);
         });
         return () => {
