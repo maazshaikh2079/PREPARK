@@ -13,6 +13,6 @@ const firebaseConfigPP = {
 }
 
 const appPP = initializeApp(firebaseConfigPP, "ppApp");
-export const db = getFirestore(appPP);
-export const auth = getAuth(appPP);
+export const dbPP = getFirestore(appPP);
+export const authPP = getAuth(appPP);
 export default appPP;
