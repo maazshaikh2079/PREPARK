@@ -8,8 +8,8 @@ const firebaseConfigPP = {
   projectId: "prepark-pp",
   storageBucket: "prepark-pp.appspot.com",
   messagingSenderId: "408591279880",
-  appId: "1:408591279880:web:187e7d447309e739cdaebd",
-  measurementId: "G-7VQ3L76TMG"
+  appId: "1:408591279880:web:2e3c58c7004c3517cdaebd",
+  measurementId: "G-8E7EB7FYW1"
 }
 
 const appPP = initializeApp(firebaseConfigPP, "ppApp");
