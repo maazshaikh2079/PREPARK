@@ -32,7 +32,9 @@ function PPSP() {
   // const { verifyEmail } = useUserAuth();
   const navigate = useNavigate();
 
-  const usersCollectionRef = collection(dbPP, "Parking_Users");
+  const puColRef = collection(dbPP, "Parking_Users");
+  const lpColRef= collection(dbPP, "License_Plates");
+
 
 const handleSubmit = async (e) => {
   e.preventDefault();
@@ -45,16 +47,21 @@ const handleSubmit = async (e) => {
       // Step 2: Send email verification
       await sendEmailVerification(authPP.currentUser);
 
+      alert("Email verification link sent.");
+
       // Step 3: Wait for email verification
       const isEmailVerified = await waitForEmailVerification();
 
       if (isEmailVerified) {
         // Step 4: Email is verified, store data in the database
-        await addDoc(usersCollectionRef, {
+        await addDoc(puColRef, {
           Name: Name,
           Phone: Number(Phone),
           Email: Email,
           Vehicle: Vehicle
+        });
+        await addDoc(lpColRef, {
+          Plate: Vehicle
         });
 
         navigate("/");

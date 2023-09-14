@@ -32,7 +32,8 @@ function SAPSP() {
   const navigate = useNavigate();
 
 
-  const usersCollectionRef = collection(dbSAP, "Residents");
+  const rColRef = collection(dbSAP, "Residents");
+  const lpColRef = collection(dbSAP, "License_Plates");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -45,17 +46,22 @@ function SAPSP() {
           // Step 2: Send email verification
           await sendEmailVerification(authSAP.currentUser);
 
+          alert("Email verification link sent.");
+
           // Step 3: Wait for email verification
           const isEmailVerified = await waitForEmailVerification();
 
           if (isEmailVerified) {
             // Step 4: Email is verified, store data in the database
-            await addDoc(usersCollectionRef, {
+            await addDoc(rColRef, {
               Name: Name,
               Room: Room,
               Phone: Number(Phone),
               Email: Email,
               Vehicle: Vehicle
+            });
+            await addDoc(lpColRef, {
+              Plate: Vehicle
             });
     
             navigate("/");
