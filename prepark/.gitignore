@@ -8,6 +8,8 @@
 # testing
 /coverage
 
+../tatus
+
 # production
 /build
 
