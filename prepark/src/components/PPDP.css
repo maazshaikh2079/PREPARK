@@ -1,0 +1,17 @@
+.card {
+    font-size: 16px; 
+    /* font-weight: bold;  */
+    /* font-family: "Cambria Math", Courier, monospace;  */
+    color: #012135; 
+    border: 2px  #012135;
+    border-radius: 7px; 
+    width: 594px;
+    text-align: left;
+    padding: 0px 20px;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    transition: all 0.1s;
+  }
+  .card:hover {
+    scale: 1.02;
+    border: 2px solid #012135;
+  } 

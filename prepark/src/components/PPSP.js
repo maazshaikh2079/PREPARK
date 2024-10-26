@@ -1,5 +1,5 @@
 import "./PPSP.css";
-import "../App.css";
+// import "../App.css";
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Form, Alert } from "react-bootstrap";

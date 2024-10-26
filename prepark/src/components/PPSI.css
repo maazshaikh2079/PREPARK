@@ -45,19 +45,35 @@ div {
   /* Ensure a minimum width for the form part */
 }
 
-/* Styling for the imageppa part */
-.imageppas-container {
-  background-image: url("./assets/images/PublicParking.jpeg");
-  /* Replace with actual imageppa path */
-  background-size: cover;
-  background-position: center;
-  min-width: 50%;
-  /* Ensure a minimum width for the imageppa part */
+/* Styling for the "Sign In" button */
+.form-container button {
+  border-radius: 20px; /* Add rounded corners to the button */
+  background-color: #007bff;
+  color: #fff;
+  font-size: 18px;
+  padding: 10px 20px;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  margin-top: 10px;
+}
+
+.form-container button:hover {
+  background-color: #0056b3;
+}
+
+/* Styling for input fields */
+.form-container input {
+  border: 1px solid #ccc;
+  padding: 10px;
+  margin: 5px 0;
+  width: 100%;
+  border-radius: 5px;
 }
 
 /* Dim effect when hovering over form */
 .container:hover .form-container {
-  filter: brightness(0.6); /* Apply dim effect */
+  filter: brightness(0.6); /* Apply the dim effect */
 }
 
 /* Media queries for responsiveness */
@@ -74,7 +90,8 @@ div {
     height: 70vh;
   }
 }
+
 .form-container:hover input {
   transform: scale(1.05); /* Enlarge the input field on hover */
-  transition: transform 0.3s; /* Add transition for the scaling effect */
+  transition: transform 0.3s; /* Add a transition for the scaling effect */
 }

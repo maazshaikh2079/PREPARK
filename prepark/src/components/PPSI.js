@@ -1,5 +1,5 @@
 import "./PPSI.css";
-import "../App.css";
+// import "../App.css";
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Form, Alert } from "react-bootstrap";
@@ -19,7 +19,7 @@ function PPSI() {
     setError("");
     try {
         await logIn(Email, Password);
-        navigate("/");
+        navigate("/ppdp");
     } catch(err) {
         setError(err.message);
     } 

@@ -63,8 +63,8 @@ function SAPSP() {
             await addDoc(lpColRef, {
               Plate: Vehicle
             });
-    
-            navigate("/");
+            alert("Registration completed.\nLogin to proceed.");
+            navigate("/sapsi");
           } else {
             // Step 5: Email not verified, delete the signed-up user
             await deleteUser(authSAP.currentUser);
@@ -98,7 +98,7 @@ function SAPSP() {
   };
 
   return (
-    <div className="container">
+    <div>
       <div className="image"></div>
       <div className="form">
        {error && <Alert variant="danger">{error}</Alert>}
@@ -169,11 +169,11 @@ function SAPSP() {
             required
           />
 
-         {/* <br/> */}
+         <br/>
           <button type="submit">Sign Up</button>
         </form>
 
-        {/* <br/> */}
+        <br/>
         <p className="sign-in-link">Already have an account? `<Link to="/sapsi">Sign In</Link>`
         </p>
       </div>

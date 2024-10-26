@@ -1,5 +1,5 @@
 import "./SAPSI.css";
-import "../App.css";
+// import "../App.css";
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Form, Alert } from "react-bootstrap";
@@ -19,7 +19,7 @@ function SAPSI() {
     setError("");
     try {
         await logIn(Email, Password);
-        navigate("/");
+        navigate("/sapdp");
     } catch(err) {
         setError(err.message);
     } 
@@ -27,7 +27,7 @@ function SAPSI() {
 
 
   return (
-    <div className="container">
+    <div >
       <div className="image1"></div>
       <div className="form">
        {error && <Alert variant="danger">{error}</Alert>}
@@ -58,12 +58,13 @@ function SAPSI() {
         
 
         <br/>
-        
-          <p className="sign-in-link">Dont have an account? 
-          `<Link to="/sapsp">Sign Up</Link>`
-          </p>
+        <p className="sign-in-link">Dont have an account? 
+       `<Link to="/sapsp">Sign Up</Link>`
+       </p>
+         
       
       </div>
+     
     </div>
   );
 }

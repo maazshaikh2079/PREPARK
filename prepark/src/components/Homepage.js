@@ -33,24 +33,25 @@ function Homepage() {
       >
         <h1 className="homepage-text">PREPARK</h1>
       </div>
-      <div className="button-container">
-        {/* Button 1 */}
-        <div className="button-container">
-        
-          {/* <img src={SoceityAutomationParkingimage} alt="Button 1" /> */}
-          <span className="button-text">
-            <Link to="/sapsi"  className="custom-link" >Society Automation Parking</Link>
-            </span>
-        </div>
 
-        {/* Button 2 */}
-        <div className="button-container">
-          {/* <img src={PublicParkingimage} alt="Button 2" className="custom-image"/> */}
-          <span className="button-text">
-          <Link to="/ppsi"  className="custom-link" >Public Parking</Link>
-          </span>
-        </div>
-      </div>
+      <div className="button-container">
+  {/* Button 1 */}
+  <div className="button" onMouseEnter={() => handleButtonHover(1)} onMouseLeave={handleButtonLeave}>
+    <img src={SoceityAutomationParkingimage} alt="Button 1" />
+    <span className="button-text">
+      <Link to="/sapsi" className="custom-link">Society Automation Parking</Link>
+    </span>
+  </div>
+
+  {/* Button 2 */}
+  <div className="button" onMouseEnter={() => handleButtonHover(2)} onMouseLeave={handleButtonLeave}>
+    <img src={PublicParkingimage} alt="Button 2" className="custom-image" />
+    <span className="button-text">
+      <Link to="/ppsi" className="custom-link">Public Parking</Link>
+    </span>
+  </div>
+</div>
+
 
       <div className="collaborators-container">
         {/* Collaborator 1 */}
